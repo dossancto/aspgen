@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"os/exec"
-
 	"github.com/lu-css/aspgen/src/general"
 	"github.com/manifoldco/promptui"
 )
@@ -65,36 +63,7 @@ func genController() {
 		DbProvider:       DbProvider,
 	}
 
-	runAspnetCodegenerator(controller)
-}
-
-func runAspnetCodegenerator(controller AspController) {
-	var udl string
-
-	if controller.UseDefaultLayout {
-		udl = "-udl"
-	}
-	cmd := exec.Command("dotnet", "aspnet-codegenerator", "controller",
-		"-name", controller.ControllerName,
-		"-m", controller.Model,
-		"-dbProvider", controller.DbProvider,
-    "-dc", controller.DbContext,
-		udl)
-
-	out, err := cmd.CombinedOutput()
-
-	if err != nil {
-		fmt.Printf("%s\n", out)
-		general.Exit()
-	}
-
-	fmt.Printf("%s", out)
-
-	if err != nil {
-		fmt.Printf("%s\n", err)
-		general.Exit()
-	}
-
+	controller.runAspnetCodegenerator()
 }
 
 func getDbContext() string {
@@ -171,7 +140,7 @@ func getDbProvider() string {
 		Label:    "{{ . }}?",
 		Active:   "\U000027A1 {{ . | cyan }}",
 		Inactive: "  {{ . | cyan }} ",
-    Selected: "Database Provider: {{ . | red | cyan }}",
+		Selected: "Database Provider: {{ . | red | cyan }}",
 	}
 
 	prompt := promptui.Select{
@@ -204,7 +173,7 @@ func getModel() string {
 		Label:    "{{ . }}?",
 		Active:   "\U000027A1 {{ . | cyan }} ({{ . | red }})",
 		Inactive: "  {{ . | cyan }} ({{ .| red }})",
-    Selected: " Selected Model: {{ . | red | cyan }}",
+		Selected: " Selected Model: {{ . | red | cyan }}",
 	}
 
 	prompt := promptui.Select{
