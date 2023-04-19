@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 )
 
 func GetAllModels(dirName string) ([]string, error) {
@@ -19,7 +20,7 @@ func GetAllModels(dirName string) ([]string, error) {
 	for _, file := range files {
 		fileName := file.Name()
 
-		models = append(models, fileName)
+		models = append(models, strings.Replace(fileName, ".cs", "", -1))
 	}
 
 	if len(models) > 0 {
