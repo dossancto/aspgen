@@ -222,8 +222,6 @@ func getModel() string {
 		return ""
 	}
 
-	fmt.Printf("You choose number %d: %s\n", i+1, models[i])
-
 	return models[i]
 
 }
